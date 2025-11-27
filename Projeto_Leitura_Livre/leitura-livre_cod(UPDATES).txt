@@ -1,0 +1,30 @@
+-- Garante que estamos usando o banco correto
+USE Leitura_Livre;
+
+-- 1. TESTANDO SELECT (CONSULTAS) 
+-- Ver livros disponíveis na Leitura Livre
+SELECT * FROM exemplar WHERE status = 'Disponível';
+
+-- Relatório completo de empréstimos
+SELECT u.nome AS Leitor, o.titulo AS Livro, e.data_prevista_devolucao 
+FROM emprestimo e
+JOIN usuario u ON e.id_usuario = u.id_usuario
+JOIN item_emprestimo ie ON e.id_emprestimo = ie.id_emprestimo
+JOIN exemplar ex ON ie.id_exemplar = ex.id_exemplar
+JOIN obra o ON ex.id_obra = o.id_obra;
+
+-- 2. TESTANDO UPDATE (ATUALIZAÇÃO)
+-- Atualizar data de devolução real
+UPDATE emprestimo 
+SET data_real_devolucao = CURDATE() 
+WHERE id_emprestimo = 1;
+
+-- Alterar status do exemplar para Disponível
+UPDATE exemplar 
+SET status = 'Disponível' 
+WHERE id_exemplar = 2;
+
+-- 3. TESTANDO DELETE (EXCLUSÃO) 
+-- Criar e deletar um gênero de teste
+INSERT INTO genero (descricao) VALUES ('Terror'); 
+DELETE FROM genero WHERE descricao = 'Terror';
